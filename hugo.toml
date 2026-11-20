@@ -59,3 +59,9 @@ category = 'categories'
 tag = 'tags'
 author = 'authors'
 collection = 'collections'
+
+[[menus.main]]
+identifier = 'github'
+name = 'GitHub'
+url = 'https://github.com/xrwang8'
+weight = 6
