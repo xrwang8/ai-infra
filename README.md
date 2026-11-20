@@ -1,4 +1,4 @@
-# 云原生智造
+# 智算手记
 
 基于 Hugo 和 FixIt 的技术博客，发布于 GitHub Pages。
 

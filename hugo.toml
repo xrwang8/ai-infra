@@ -1,5 +1,5 @@
 baseURL = 'https://xrwang8.github.io/ai-infra/'
-title = '云原生智造'
+title = '智算手记'
 theme = 'FixIt'
 defaultContentLanguage = 'zh-cn'
 locale = 'zh-CN'
@@ -11,11 +11,11 @@ license = ''
 description = '从 Kubernetes、云原生到 AI Infra 与 AI Agent 的技术实践'
 
 [params.author]
-name = '云原生智造'
+name = '智算手记'
 
 [params.home.profile]
 enable = true
-title = '云原生智造'
+title = '智算手记'
 subtitle = '探索 Kubernetes、AI Infra 与 AI Agent 的技术实践'
 typeit = false
 social = false
