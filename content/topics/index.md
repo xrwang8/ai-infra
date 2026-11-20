@@ -9,7 +9,6 @@ title: "专题导航"
 关注容器、集群调度、网络、存储和可观测性。
 
 - [双卡 Pod 已经调度，为什么 13 分 51 秒才 Ready？](/posts/qwen-dual-gpu-cold-start/)
-- [模型能列出来，config.json 却返回 404：一次推理部署的 revision 排查](/posts/model-revision-404/)
 
 ## AI Infra
 
