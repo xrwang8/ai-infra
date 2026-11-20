@@ -1,0 +1,61 @@
+baseURL = 'https://xrwang8.github.io/'
+title = '云原生智造'
+theme = 'FixIt'
+defaultContentLanguage = 'zh-cn'
+locale = 'zh-CN'
+hasCJKLanguage = true
+enableRobotsTXT = true
+
+[params]
+description = '从 Kubernetes、云原生到 AI Infra 与 AI Agent 的技术实践'
+
+[params.author]
+name = '云原生智造'
+
+[params.home.profile]
+enable = true
+title = '云原生智造'
+subtitle = '探索 Kubernetes、AI Infra 与 AI Agent 的技术实践'
+typeit = false
+social = false
+contribution = false
+fullscreen = false
+
+[params.search]
+enable = true
+type = 'fuse'
+
+[outputs]
+home = ['HTML', 'RSS', 'JSON']
+
+[[menus.main]]
+identifier = 'posts'
+name = '文章'
+url = '/posts/'
+weight = 1
+[[menus.main]]
+identifier = 'topics'
+name = '专题'
+url = '/topics/'
+weight = 2
+[[menus.main]]
+identifier = 'categories'
+name = '分类'
+url = '/categories/'
+weight = 3
+[[menus.main]]
+identifier = 'tags'
+name = '标签'
+url = '/tags/'
+weight = 4
+[[menus.main]]
+identifier = 'about'
+name = '关于'
+url = '/about/'
+weight = 5
+
+[taxonomies]
+category = 'categories'
+tag = 'tags'
+author = 'authors'
+collection = 'collections'
