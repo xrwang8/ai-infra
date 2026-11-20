@@ -7,6 +7,7 @@ hasCJKLanguage = true
 enableRobotsTXT = true
 
 [params]
+license = ''
 description = '从 Kubernetes、云原生到 AI Infra 与 AI Agent 的技术实践'
 
 [params.author]

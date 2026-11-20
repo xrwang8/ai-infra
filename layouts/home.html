@@ -18,7 +18,7 @@
     <section class="recent" aria-labelledby="recent-title">
       <div class="section-heading"><div><h2 id="recent-title">最近文章</h2><p>记录学习、实践与思考。</p></div><a href="{{ "posts/" | relURL }}">查看全部文章 <span aria-hidden="true">›</span></a></div>
       <div class="post-list">
-      {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+      {{ range first 5 (where (where .Site.RegularPages "Section" "posts") "Params.hideFromRecent" "ne" true) }}
         <article class="post-row"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Summary | plainify | truncate 100 }}</p></div></article>
       {{ else }}<p class="empty">文章正在准备中。</p>{{ end }}
       </div>

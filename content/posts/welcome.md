@@ -2,6 +2,7 @@
 title: "你好，云原生智造"
 date: 2026-11-20
 categories: ["站点"]
+hideFromRecent: true
 tags: ["欢迎"]
 ---
 
