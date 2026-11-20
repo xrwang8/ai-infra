@@ -1,0 +1,37 @@
+{{ define "title" }}{{ .Site.Title }}{{ end }}
+{{ define "content" }}
+<link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
+<div class="knowledge-home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="terminal">
+      <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span><small>cloud-native — zsh</small></div>
+      <div class="terminal-content">
+        <p class="command"><span>$</span> whoami</p>
+        <h1 id="hero-title">云原生智造</h1>
+        <p class="terminal-description">记录 Kubernetes、云原生、AI Infra 与 AI Agent 的技术实践与思考。</p>
+        <p class="command final-command"><span>$</span> ./explore <i aria-hidden="true"></i></p>
+      </div>
+    </div>
+    <div class="hero-actions"><a class="button button-primary" href="#topics">探索专题</a><a class="button button-secondary" href="https://github.com/xrwang8">GitHub</a></div>
+  </section>
+  <div class="home-content">
+    <section class="recent" aria-labelledby="recent-title">
+      <div class="section-heading"><div><h2 id="recent-title">最近文章</h2><p>记录学习、实践与思考。</p></div><a href="{{ "posts/" | relURL }}">查看全部文章 <span aria-hidden="true">›</span></a></div>
+      <div class="post-list">
+      {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+        <article class="post-row"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Summary | plainify | truncate 100 }}</p></div></article>
+      {{ else }}<p class="empty">文章正在准备中。</p>{{ end }}
+      </div>
+    </section>
+    <section class="topics" id="topics" aria-labelledby="topics-title">
+      <div class="section-heading"><div><h2 id="topics-title">探索专题</h2><p>从基础设施到智能应用，逐步梳理技术脉络。</p></div><a href="{{ "topics/" | relURL }}">全部专题 <span aria-hidden="true">›</span></a></div>
+      <div class="topic-grid">
+        <a class="topic-card" href="{{ "topics/#kubernetes-与云原生" | relURL }}"><span class="topic-icon" aria-hidden="true">⌘</span><h3>Kubernetes</h3><p>容器编排、集群调度与平台实践。</p></a>
+        <a class="topic-card" href="{{ "topics/#kubernetes-与云原生" | relURL }}"><span class="topic-icon" aria-hidden="true">☁</span><h3>云原生</h3><p>网络、存储、可观测性与工程实践。</p></a>
+        <a class="topic-card" href="{{ "topics/#ai-infra" | relURL }}"><span class="topic-icon" aria-hidden="true">▱</span><h3>AI Infra</h3><p>异构算力、模型服务与推理优化。</p></a>
+        <a class="topic-card" href="{{ "topics/#ai-agent" | relURL }}"><span class="topic-icon" aria-hidden="true">⌁</span><h3>AI Agent</h3><p>智能体架构、工具、记忆与应用。</p></a>
+      </div>
+    </section>
+  </div>
+</div>
+{{ end }}

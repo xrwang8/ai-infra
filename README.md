@@ -17,6 +17,6 @@ tags: ["Kubernetes"]
 文章内容。
 ```
 
-提交并推送到 `main` 后，GitHub Actions 会构建并发布网站。专题导航在 `content/topics/_index.md`，站点配置在 `hugo.toml`。
+提交并推送到 `main` 后，GitHub Actions 会构建并发布网站。专题导航在 `content/topics/index.md`，站点配置在 `hugo.toml`。
 
 本地运行需要 Hugo Extended 0.170.1 和 Dart Sass；克隆仓库时使用 `git clone --recurse-submodules`。
