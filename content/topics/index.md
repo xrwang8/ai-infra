@@ -8,17 +8,17 @@ title: "专题导航"
 
 关注容器、集群调度、网络、存储和可观测性。
 
-- [双卡 Pod 已经调度，为什么 13 分 51 秒才 Ready？](/posts/qwen-dual-gpu-cold-start/)
+- [双卡 Pod 已经调度，为什么 13 分 51 秒才 Ready？]({{< relref "posts/qwen-dual-gpu-cold-start/index.md" >}})
 
 ## AI Infra
 
 关注 GPU/NPU 资源、模型服务、推理引擎与性能优化。
 
-- [HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在哪里？](/posts/hami-vnpu-performance/)
+- [HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在哪里？]({{< relref "posts/hami-vnpu-performance/index.md" >}})
 
-- [请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层？](/posts/vllm-kv-cache-memory/)
-- [vLLM 跑出 3753 Token/s，为什么换个分子，成绩就变了？](/posts/vllm-throughput-goodput/)
-- [并发从 1 到 4，为什么 vLLM 已经开始输出，还会一顿一顿地到？](/posts/vllm-streaming-concurrency/)
+- [请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层？]({{< relref "posts/vllm-kv-cache-memory/index.md" >}})
+- [vLLM 跑出 3753 Token/s，为什么换个分子，成绩就变了？]({{< relref "posts/vllm-throughput-goodput/index.md" >}})
+- [并发从 1 到 4，为什么 vLLM 已经开始输出，还会一顿一顿地到？]({{< relref "posts/vllm-streaming-concurrency/index.md" >}})
 
 ## AI Agent
 

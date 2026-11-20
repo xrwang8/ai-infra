@@ -1,4 +1,4 @@
-baseURL = 'https://xrwang8.github.io/'
+baseURL = 'https://xrwang8.github.io/ai-infra/'
 title = '云原生智造'
 theme = 'FixIt'
 defaultContentLanguage = 'zh-cn'
