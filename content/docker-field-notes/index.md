@@ -30,5 +30,3 @@ description: "12 篇从工程问题出发的 Docker 学习笔记，覆盖容器�
 - [docker ps 找不到这个 Pod，应该去哪里查？]({{< relref "posts/docker-kubernetes-containerd-cri/index.md" >}})
 
 如果要补 Docker Engine 安装，按目标操作系统的当前官方步骤配置软件源。旧课件里的 `apt-key` 流程适合识别历史环境，部署时以当前发行版文档为准。 [Docker Engine 在 Ubuntu 上的安装说明](https://docs.docker.com/engine/install/ubuntu/)
-
-系列的学习线索来自孟凡杰的《Docker 核心技术》课件。各篇独立组织工程场景、复现配方和配图，技术引用附在对应段落。
