@@ -38,7 +38,7 @@ OCI 镜像的文件系统层按顺序描述新增、变更和删除。运行时�
 
 ## Docker 的 overlay2 和 containerd 的 overlayfs
 
-`overlay2` 是 Docker 经典存储驱动名，`overlayfs` 也可以指 containerd 的 snapshotter。二者都使用 Linux 的叠加文件系统能力，但镜像元数据、快照管理方式和排查目录不同。**Docker Engine 29.0 起，新安装默认使用 containerd image store。** 已有安装可能沿用原来的经典驱动，不能只看版本就断定机器用了哪个后端。可先读 `docker info` 中的 Storage Driver 和 Driver Status。 [Docker containerd image store](https://docs.docker.com/engine/storage/containerd/)
+`overlay2` 是 Docker 经典存储驱动名，`overlayfs` 也可以指 containerd 的 snapshotter。二者都使用 Linux 的叠加文件系统能力，但镜像元数据、快照管理方式和排查目录不同。**从 Docker Engine 29.0 起，常规新装默认使用 containerd image store。** 由旧版本升级的节点可能继续使用经典驱动。配置了 `userns-remap` 的 Daemon 属于例外，不能使用 Docker 的 containerd image store。可先读 `docker info` 中的 Storage Driver 和 Driver Status。 [Docker containerd image store](https://docs.docker.com/engine/storage/containerd/)
 
 切换 image store 是一次存储迁移。原后端的镜像和容器可能仍留在磁盘，而新的存储视图看不到它们。上线前应该分别安排镜像重新导入或拉取，以及对卷数据的备份与恢复演练。
 

@@ -16,9 +16,11 @@ tags: ["Docker", "OCI", "多架构镜像", "镜像仓库"]
 | Registry tag | 某个仓库内的名字，能否改变由仓库策略决定 | 解析它的时间与结果 |
 | Index digest | 一份带平台清单的 OCI 镜像索引 | 目标 OS、架构与变体 |
 | 单平台 manifest digest | 指定平台的配置和层清单 | 运行节点实际选到的制品 |
-| Docker 本地 image ID | 本地显示的镜像配置身份 | Registry 的 manifest 或 index digest |
+| Docker 本地 image ID | 经典存储使用配置摘要，containerd image store 可以显示目标 manifest 或 index 的摘要 | Docker 版本、镜像存储后端和目标平台 |
 
-Manifest 指向配置和有顺序的层。索引再指向这些不同平台的 manifest。因此固定索引 digest，适合让多类节点引用同一份平台集合。两台不同架构的节点仍会选择属于各自平台的制品。固定单平台 manifest digest，则适合明确部署环境的单平台交付。节点上读到的本地 image ID 和仓库里看的 digest 也可能是在比较不同对象。
+Manifest 指向配置和有顺序的层。索引再指向这些不同平台的 manifest。因此固定索引 digest，适合让多类节点引用同一份平台集合。两台不同架构的节点仍会选择属于各自平台的制品。固定单平台 manifest digest，则适合明确部署环境的单平台交付。
+
+Docker CLI 的本地 `IMAGE ID` 也要按存储后端解释。以 Engine 29.10.0 为例，经典存储的镜像身份来自配置内容。containerd image store 的列表和 inspect 则从已存镜像的目标描述符取 ID。这个目标可能是索引，也可能是单平台 manifest。两台架构不同的机器即使显示相同的索引 ID，仍要分别核对实际选到的 manifest。 [经典镜像格式的 ImageID](https://github.com/moby/docker-image-spec/blob/main/spec.md#imageid) · [Moby 29.10.0 的列表实现](https://github.com/moby/moby/blob/docker-v29.10.0/daemon/containerd/image_list.go#L285) · [Moby 29.10.0 的 inspect 实现](https://github.com/moby/moby/blob/docker-v29.10.0/daemon/containerd/image_inspect.go#L95)
 
 用 `docker buildx imagetools inspect <仓库>/<镜像>:<tag>` 可以查看远端索引和平台。发布记录里我会同时保留索引 digest、支持的平台和各平台的 manifest。比如 amd64 及 arm64 都通过了构建验证，但只有 amd64 做过真实推理，就在交付记录中分别标状态。 [Docker 多平台镜像](https://docs.docker.com/build/building/multi-platform/) · [imagetools inspect](https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/)
 

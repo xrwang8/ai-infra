@@ -23,7 +23,7 @@ Docker 的 `--cpus` 主要交易的是带宽预算。即使允许在线程迁移
 
 ## 两个线程怎样用完半个 CPU 的预算
 
-如果 `cpu.max` 读到 `50000 100000`，意思是在一个 100 ms 的周期里，所有线程总共最多消费 50 ms 的 CPU 时间。长期饱和时，它大约相当于半个逻辑 CPU 的时间预算。若两个线程理想情况下能同时各忙 25 ms，就可能在约 25 ms 墙钟时间内用完它。周期余下的时间，两条线程即使还有工作，也需要等额度恢复。这是解释预算的算例。实际时间还受调度、层级和线程是否一直可运行影响。
+如果 `cpu.max` 读到 `50000 100000`，基础预算就是每个 100 ms 周期共用 50 ms CPU 时间。在 `cpu.max.burst=0`、上级没有更紧限制的算例里，两个线程若能同时各忙 25 ms，就可能在约 25 ms 墙钟时间内用完预算。周期余下的时间仍有工作时，需要等额度恢复。开启 `cpu.max.burst` 后应另外考虑允许短时消费的余额。实际触发节流的时刻还受调度、层级和线程是否一直可运行影响。
 
 对 v1 手册，需要把 `cpu.cfs_quota_us` 和 `cpu.cfs_period_us` 合在 v2 的 `cpu.max` 概念里读。公平调度决定许多可运行任务的先后，cgroup 带宽控制又对组总消耗有约束。Linux 从 6.6 开始向 EEVDF 过渡，阅读内核调度实现时要按版本看。 [Linux CPU Controller](https://docs.kernel.org/admin-guide/cgroup-v2.html#cpu) · [Linux EEVDF](https://docs.kernel.org/scheduler/sched-eevdf.html)
 
