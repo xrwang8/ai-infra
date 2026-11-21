@@ -1,72 +1,34 @@
 {{ define "title" }}{{ .Site.Title }}{{ end }}
 {{ define "content" }}
-{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
-{{ $topicPage := .Site.GetPage "/topics" }}
-{{ $topics := slice
-  (dict "name" "Kubernetes 与云原生" "anchor" "kubernetes-与云原生" "accent" "indigo" "description" "设备调度、GPU 服务发布与模型冷启动。")
-  (dict "name" "推理运行时与设备" "anchor" "推理运行时与设备" "accent" "blue" "description" "从 HAMi vNPU 到 CUDA Graph、张量并行与集合通信。")
-  (dict "name" "KV Cache" "anchor" "kv-cache" "accent" "teal" "description" "缓存容量、前缀命中、块复用与显存生命周期。")
-  (dict "name" "压测与可观测性" "anchor" "压测与可观测性" "accent" "amber" "description" "沿着吞吐、首段延迟、排队与流式交付复核性能。")
-}}
-{{ with resources.Get "css/knowledge-home.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
-{{ end }}
-<div class="knowledge-home">
-  <section class="home-hero" aria-labelledby="hero-title">
-    <div class="home-terminal">
-      <div class="terminal-bar" aria-hidden="true">
-        <span></span><span></span><span></span>
-        <small>zhisuanshouji / notes</small>
-      </div>
-      <div class="terminal-content">
-        <p class="terminal-command" aria-hidden="true">[ <span>$</span> cat README.md ]</p>
-        <h1 id="hero-title">{{ .Site.Title }}</h1>
-        <p class="terminal-description">记录 Kubernetes、云原生、AI Infra 与 AI Agent 的技术实践。</p>
-        <p class="terminal-inventory"><strong>{{ len $posts }}</strong> 篇文章 · 部署 / 排障 / 性能实测</p>
-        <div class="hero-actions">
-          <a class="home-button primary" href="#topics">浏览专题 <span aria-hidden="true">→</span></a>
-          <a class="home-button secondary" href="{{ "posts/" | relURL }}">全部文章</a>
-        </div>
-      </div>
+{{ with resources.Get "css/knowledge-home.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">{{ end }}
+<div class="journal">
+  <section class="journal-hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <h1 id="hero-title">智算手记</h1>
+      <p class="hero-lead">记录云原生与智能计算的<br>思考和实践。</p>
+      <span class="hero-rule" aria-hidden="true"></span>
+      <p class="hero-note">从 Kubernetes、云原生到 AI Infra 与 AI Agent，记录技术原理、工程实践与一线经验。</p>
+      <a class="hero-link" href="#recent">阅读最新文章 <span aria-hidden="true">→</span></a>
     </div>
+    <div class="hero-geometry" aria-hidden="true"><span class="orbit one"></span><span class="orbit two"></span><span class="axis x"></span><span class="axis y"></span><span class="point p1"></span><span class="point p2"></span><span class="point p3"></span><span class="graph-grid"></span></div>
   </section>
-
-  <div class="home-content">
-    <section aria-labelledby="recent-title">
-      <div class="home-section-heading">
-        <h2 id="recent-title"><span aria-hidden="true">›</span> 最近文章</h2>
-        <a href="{{ "posts/" | relURL }}">查看全部 <span aria-hidden="true">→</span></a>
+  <div class="journal-body">
+    <section class="recent" id="recent" aria-labelledby="recent-title">
+      <div class="section-heading"><div><h2 id="recent-title">最新文章</h2><p>从真实问题出发，记录过程与思考。</p></div><a href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">→</span></a></div>
+      <div class="post-list">
+      {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+        <article class="post-row"><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Summary | plainify | truncate 110 }}</p><div class="post-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ with .Params.categories }}<span>{{ index . 0 }}</span>{{ end }}</div></article>
+      {{ else }}<p>文章正在准备中。</p>{{ end }}
       </div>
-      <ul class="home-post-list">
-        {{ range first 5 $posts }}
-        <li class="home-post-row">
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          {{ with .Params.tags }}<span class="post-tags">{{ delimit (first 2 .) " · " }}</span>{{ end }}
-        </li>
-        {{ else }}
-        <li class="home-post-empty">文章正在整理。</li>
-        {{ end }}
-      </ul>
     </section>
-
-    <section id="topics" aria-labelledby="topics-title">
-      <div class="home-section-heading">
-        <h2 id="topics-title"><span aria-hidden="true">›</span> 技术专题</h2>
-        <a href="{{ $topicPage.RelPermalink }}">专题导航 <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="home-topic-grid">
-        {{ range $topics }}
-        <a class="home-topic-card" data-accent="{{ .accent }}" href="{{ $topicPage.RelPermalink }}#{{ .anchor }}">
-          <h3>{{ .name }}</h3>
-          <span class="topic-arrow" aria-hidden="true">→</span>
-          <p>{{ .description }}</p>
-        </a>
-        {{ end }}
-      </div>
-      <div class="home-related">
-        <a href="{{ $topicPage.RelPermalink }}#ai-agent">AI Agent <span aria-hidden="true">→</span></a>
-      </div>
+    <section class="topics" id="topics" aria-labelledby="topics-title">
+      <div class="section-heading"><div><h2 id="topics-title">专题索引</h2><p>循着主题，深入阅读。</p></div></div>
+      <a class="topic-row" href="{{ "topics/#kubernetes-与云原生" | relURL }}"><strong>Kubernetes</strong><span>容器编排与集群调度</span></a>
+      <a class="topic-row" href="{{ "topics/#推理运行时与设备" | relURL }}"><strong>推理运行时与设备</strong><span>HAMi vNPU、CUDA Graph 与张量并行</span></a>
+      <a class="topic-row" href="{{ "topics/#kv-cache" | relURL }}"><strong>KV Cache</strong><span>缓存容量、前缀命中与显存生命周期</span></a>
+      <a class="topic-row" href="{{ "topics/#压测与可观测性" | relURL }}"><strong>压测与可观测性</strong><span>吞吐、延迟与流式交付</span></a>
+      <a class="topic-row" href="{{ "topics/#ai-agent" | relURL }}"><strong>AI Agent</strong><span>智能体架构与工程实践</span></a>
+      <a class="all-topics" href="{{ "topics/" | relURL }}">查看全部专题 <span aria-hidden="true">→</span></a>
     </section>
   </div>
 </div>
