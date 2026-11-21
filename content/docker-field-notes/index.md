@@ -3,7 +3,7 @@ title: "Docker 工程笔记"
 description: "12 篇从工程问题出发的 Docker 学习笔记，覆盖容器进程、namespace、cgroup v2、网络、BuildKit、镜像交付和 Kubernetes 运行时。"
 ---
 
-一个镜像从构建机走到线上，要经过制品选择、进程启动、资源分配和请求交付。出了问题，先确定卡在哪一段。这组笔记把 Docker 的主要机制拆成 12 个可以单独排查的问题，方便按现场现象选读。
+学 Docker 可以沿着同一个镜像从构建走到运行的过程。先理解镜像、容器和进程的关系，再分清 namespace 的资源视图、cgroup 的资源预算、存储层的数据生命周期和网络的通信路径。理解运行模型之后，再学怎样用 Dockerfile 交付可复现的制品，最后接到 Kubernetes 的 CRI 和跨节点网络。
 
 ## 运行与资源
 
@@ -14,7 +14,7 @@ description: "12 篇从工程问题出发的 Docker 学习笔记，覆盖容器�
 
 ## 存储、网络和生命周期
 
-- [容器停了文件还在，为什么重新 docker run 就没了？]({{< relref "posts/docker-overlayfs-writable-layer-volume/index.md" >}})
+- [Docker 存储驱动详解：镜像层、写时复制与后端取舍]({{< relref "posts/docker-overlayfs-writable-layer-volume/index.md" >}})
 - [容器 80 端口有返回，为什么宿主访问还是失败？]({{< relref "posts/docker-port-mapping-bridge/index.md" >}})
 - [docker stop 了，服务为什么没走完自己的退出逻辑？]({{< relref "posts/docker-pid1-graceful-shutdown/index.md" >}})
 
@@ -28,5 +28,3 @@ description: "12 篇从工程问题出发的 Docker 学习笔记，覆盖容器�
 
 - [同节点容器能通，跨节点 Pod 为什么超时？]({{< relref "posts/docker-vxlan-cross-node-troubleshooting/index.md" >}})
 - [docker ps 找不到这个 Pod，应该去哪里查？]({{< relref "posts/docker-kubernetes-containerd-cri/index.md" >}})
-
-如果要补 Docker Engine 安装，按目标操作系统的当前官方步骤配置软件源。旧课件里的 `apt-key` 流程适合识别历史环境，部署时以当前发行版文档为准。 [Docker Engine 在 Ubuntu 上的安装说明](https://docs.docker.com/engine/install/ubuntu/)
