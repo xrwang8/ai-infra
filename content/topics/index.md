@@ -25,6 +25,7 @@ title: "专题导航"
 
 ### KV Cache
 
+- [TP 从 4 加到 8，KV 显存为什么可能不再减半？]({{< relref "posts/vllm-tp-kv-head-replication/index.md" >}})
 - [都是 10.8 GiB，vLLM 的 KV Cache 容量为什么多了近 20 万 Token？]({{< relref "posts/vllm-kv-capacity-denominator/index.md" >}})
 - [同样共享 4K 前缀，为什么 vLLM 一次命中 3,696 Token，另一次命中 0？]({{< relref "posts/vllm-prefix-checkpoint-history/index.md" >}})
 - [请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层？]({{< relref "posts/vllm-kv-cache-memory/index.md" >}})
