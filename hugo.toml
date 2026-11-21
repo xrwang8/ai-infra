@@ -27,7 +27,7 @@ enable = true
 type = 'fuse'
 
 [outputs]
-home = ['HTML', 'RSS', 'JSON']
+home = ['HTML', 'RSS', 'JSON', 'search']
 
 [[menus.main]]
 identifier = 'posts'

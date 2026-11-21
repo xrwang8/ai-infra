@@ -1,35 +1,69 @@
 {{ define "title" }}{{ .Site.Title }}{{ end }}
 {{ define "content" }}
+{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
+{{ $topicPage := .Site.GetPage "/topics" }}
+{{ $topics := slice
+  (dict "name" "Kubernetes 与云原生" "anchor" "kubernetes-与云原生" "accent" "indigo" "description" "设备调度、GPU 服务发布与模型冷启动。")
+  (dict "name" "推理运行时与设备" "anchor" "推理运行时与设备" "accent" "blue" "description" "从 HAMi vNPU 到 CUDA Graph、张量并行与集合通信。")
+  (dict "name" "KV Cache" "anchor" "kv-cache" "accent" "teal" "description" "缓存容量、前缀命中、块复用与显存生命周期。")
+  (dict "name" "压测与可观测性" "anchor" "压测与可观测性" "accent" "amber" "description" "沿着吞吐、首段延迟、排队与流式交付复核性能。")
+}}
 <link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
 <div class="knowledge-home">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="terminal">
-      <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span><small>cloud-native — zsh</small></div>
+  <section class="home-hero" aria-labelledby="hero-title">
+    <div class="home-terminal">
+      <div class="terminal-bar" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <small>zhisuanshouji / notes</small>
+      </div>
       <div class="terminal-content">
-        <p class="command"><span>$</span> whoami</p>
-        <h1 id="hero-title">智算手记</h1>
-        <p class="terminal-description">记录 Kubernetes、云原生、AI Infra 与 AI Agent 的技术实践与思考。</p>
-        <p class="command final-command"><span>$</span> ./explore <i aria-hidden="true"></i></p>
+        <p class="terminal-command" aria-hidden="true">[ <span>$</span> cat README.md ]</p>
+        <h1 id="hero-title">{{ .Site.Title }}</h1>
+        <p class="terminal-description">记录 Kubernetes、云原生、AI Infra 与 AI Agent 的技术实践。</p>
+        <p class="terminal-inventory"><strong>{{ len $posts }}</strong> 篇文章 · 部署 / 排障 / 性能实测</p>
+        <div class="hero-actions">
+          <a class="home-button primary" href="#topics">浏览专题 <span aria-hidden="true">→</span></a>
+          <a class="home-button secondary" href="{{ "posts/" | relURL }}">全部文章</a>
+        </div>
       </div>
     </div>
-    <div class="hero-actions"><a class="button button-primary" href="#topics">探索专题</a><a class="button button-secondary" href="https://github.com/xrwang8">GitHub</a></div>
   </section>
+
   <div class="home-content">
-    <section class="recent" aria-labelledby="recent-title">
-      <div class="section-heading"><div><h2 id="recent-title">最近文章</h2><p>记录学习、实践与思考。</p></div><a href="{{ "posts/" | relURL }}">查看全部文章 <span aria-hidden="true">›</span></a></div>
-      <div class="post-list">
-      {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
-        <article class="post-row"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Summary | plainify | truncate 100 }}</p></div></article>
-      {{ else }}<p class="empty">文章正在准备中。</p>{{ end }}
+    <section aria-labelledby="recent-title">
+      <div class="home-section-heading">
+        <h2 id="recent-title"><span aria-hidden="true">›</span> 最近文章</h2>
+        <a href="{{ "posts/" | relURL }}">查看全部 <span aria-hidden="true">→</span></a>
       </div>
+      <ul class="home-post-list">
+        {{ range first 5 $posts }}
+        <li class="home-post-row">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          {{ with .Params.tags }}<span class="post-tags">{{ delimit (first 2 .) " · " }}</span>{{ end }}
+        </li>
+        {{ else }}
+        <li class="home-post-empty">文章正在整理。</li>
+        {{ end }}
+      </ul>
     </section>
-    <section class="topics" id="topics" aria-labelledby="topics-title">
-      <div class="section-heading"><div><h2 id="topics-title">探索专题</h2><p>从基础设施到智能应用，逐步梳理技术脉络。</p></div><a href="{{ "topics/" | relURL }}">全部专题 <span aria-hidden="true">›</span></a></div>
-      <div class="topic-grid">
-        <a class="topic-card" href="{{ "topics/#kubernetes-与云原生" | relURL }}"><span class="topic-icon" aria-hidden="true">⌘</span><h3>Kubernetes</h3><p>容器编排、集群调度与平台实践。</p></a>
-        <a class="topic-card" href="{{ "topics/#kubernetes-与云原生" | relURL }}"><span class="topic-icon" aria-hidden="true">☁</span><h3>云原生</h3><p>网络、存储、可观测性与工程实践。</p></a>
-        <a class="topic-card" href="{{ "topics/#ai-infra" | relURL }}"><span class="topic-icon" aria-hidden="true">▱</span><h3>AI Infra</h3><p>异构算力、模型服务与推理优化。</p></a>
-        <a class="topic-card" href="{{ "topics/#ai-agent" | relURL }}"><span class="topic-icon" aria-hidden="true">⌁</span><h3>AI Agent</h3><p>智能体架构、工具、记忆与应用。</p></a>
+
+    <section id="topics" aria-labelledby="topics-title">
+      <div class="home-section-heading">
+        <h2 id="topics-title"><span aria-hidden="true">›</span> 技术专题</h2>
+        <a href="{{ $topicPage.RelPermalink }}">专题导航 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="home-topic-grid">
+        {{ range $topics }}
+        <a class="home-topic-card" data-accent="{{ .accent }}" href="{{ $topicPage.RelPermalink }}#{{ .anchor }}">
+          <h3>{{ .name }}</h3>
+          <span class="topic-arrow" aria-hidden="true">→</span>
+          <p>{{ .description }}</p>
+        </a>
+        {{ end }}
+      </div>
+      <div class="home-related">
+        <a href="{{ $topicPage.RelPermalink }}#ai-agent">AI Agent <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </div>
