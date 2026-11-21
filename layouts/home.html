@@ -16,8 +16,27 @@
     <section class="recent" id="recent" aria-labelledby="recent-title">
       <div class="section-heading"><div><h2 id="recent-title">最新文章</h2><p>从真实问题出发，记录过程与思考。</p></div><a href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">→</span></a></div>
       <div class="post-list">
-      {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
-        <article class="post-row"><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Summary | plainify | truncate 110 }}</p><div class="post-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ with .Params.categories }}<span>{{ index . 0 }}</span>{{ end }}</div></article>
+      {{ $seriesPages := dict "Docker 工程笔记" "/docker-field-notes" "Istio 流量管理" "/istio-traffic-learning" }}
+      {{ $shownSeries := slice }}
+      {{ $visible := 0 }}
+      {{ range where .Site.RegularPages "Section" "posts" }}
+        {{ $post := . }}
+        {{ $entry := . }}
+        {{ $summary := .Summary }}
+        {{ with .Params.categories }}
+          {{ with index $seriesPages (index . 0) }}
+            {{ if in $shownSeries . }}{{ continue }}{{ end }}
+            {{ $seriesPath := . }}
+            {{ with $post.Site.GetPage $seriesPath }}
+              {{ $shownSeries = $shownSeries | append $seriesPath }}
+              {{ $entry = . }}
+              {{ $summary = .Description }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+        <article class="post-row"><h3><a href="{{ $entry.RelPermalink }}">{{ $entry.Title }}</a></h3><p>{{ $summary | plainify | truncate 110 }}</p><div class="post-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ with .Params.categories }}<span>{{ if eq $entry $post }}{{ index . 0 }}{{ else }}专题{{ end }}</span>{{ end }}</div></article>
+        {{ $visible = add $visible 1 }}
+        {{ if ge $visible 5 }}{{ break }}{{ end }}
       {{ else }}<p>文章正在准备中。</p>{{ end }}
       </div>
     </section>
