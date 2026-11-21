@@ -8,15 +8,32 @@ title: "专题导航"
 
 关注容器、集群调度、网络、存储和可观测性。
 
+- [Kubernetes 1.37：GPU Pod 不改 YAML，也能走 DRA？]({{< relref "posts/k8s-dra-extended-resource/index.md" >}})
+- [GPU 满了，模型还怎么升级：滚动发布的容量与排空边界]({{< relref "posts/gpu-serving-rollout/index.md" >}})
 - [双卡 Pod 已经调度，为什么 13 分 51 秒才 Ready？]({{< relref "posts/qwen-dual-gpu-cold-start/index.md" >}})
 
 ## AI Infra
 
 关注 GPU/NPU 资源、模型服务、推理引擎与性能优化。
 
-- [HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在哪里？]({{< relref "posts/hami-vnpu-performance/index.md" >}})
+### 推理运行时与设备
 
+- [HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在哪里？]({{< relref "posts/hami-vnpu-performance/index.md" >}})
+- [明明没禁用，vLLM 为什么还是关闭了 Custom AllReduce？]({{< relref "posts/vllm-custom-allreduce-selection/index.md" >}})
+- [Gate/Up 合并后，TP=2 为什么不能把权重直接切成两半？]({{< relref "posts/vllm-merged-mlp-tp-layout/index.md" >}})
+- [5 行补成 8 行，CUDA Graph 为什么反而更快？]({{< relref "posts/cuda-graph-padding/index.md" >}})
+
+### KV Cache
+
+- [都是 10.8 GiB，vLLM 的 KV Cache 容量为什么多了近 20 万 Token？]({{< relref "posts/vllm-kv-capacity-denominator/index.md" >}})
+- [同样共享 4K 前缀，为什么 vLLM 一次命中 3,696 Token，另一次命中 0？]({{< relref "posts/vllm-prefix-checkpoint-history/index.md" >}})
 - [请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层？]({{< relref "posts/vllm-kv-cache-memory/index.md" >}})
+- [KV Cache 命中率 64.4%，到底测到了什么？]({{< relref "posts/inference-cache-hit-coverage/index.md" >}})
+
+### 压测与可观测性
+
+- [请求全部成功，停发后却还要等 86 秒]({{< relref "posts/inference-open-loop-drain/index.md" >}})
+- [P99 算出 2.49 秒，但样本上限不到 1.62 秒]({{< relref "posts/vllm-histogram-quantile/index.md" >}})
 - [vLLM 跑出 3753 Token/s，为什么换个分子，成绩就变了？]({{< relref "posts/vllm-throughput-goodput/index.md" >}})
 - [并发从 1 到 4，为什么 vLLM 已经开始输出，还会一顿一顿地到？]({{< relref "posts/vllm-streaming-concurrency/index.md" >}})
 
