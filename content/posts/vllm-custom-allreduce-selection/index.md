@@ -3,6 +3,7 @@ title: "明明没禁用，vLLM 为什么还是关闭了 Custom AllReduce？"
 date: "2026-11-21"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "NCCL", "张量并行"]
+description: "从 vLLM 0.33.0 启动日志与双 Rank Trace 排查 Custom AllReduce 为何被禁用，说明 P2P 资格、消息条件和 PyNccl 执行路径。"
 ---
 
 ![工程师检查双卡直连资格与替代通信路径的原创概念插画](images/cover.png)

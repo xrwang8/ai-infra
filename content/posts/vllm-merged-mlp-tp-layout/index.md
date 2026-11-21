@@ -3,6 +3,7 @@ title: "Gate/Up 合并后，TP=2 为什么不能把权重直接切成两半？"
 date: "2026-11-20"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "张量并行", "Qwen3.5"]
+description: "沿 Qwen3.5-9B 双卡 Trace 和 vLLM 加载器检查合并 Gate/Up 权重的 TP 分片，并用 320 组 CPU 算例核对特征与输出。"
 ---
 
 ![工程师检查两种互补电路模块的原创概念插画](images/cover.png)
@@ -198,6 +199,8 @@ gate, up = gate_up.chunk(2, dim=-1)
 partial_y = (torch.nn.functional.silu(gate) * up) @ local_down.T
 # 对所有 Rank 的 partial_y 求和，恢复未分片输出。
 ```
+
+在 QKV 投影里，还要核对每组查询应读取哪份 KV 头。 [Qwen3.5 的 TP 分片与 KV 头复制]({{< relref "posts/vllm-tp-kv-head-replication/index.md" >}})
 
 ## 资料来源
 

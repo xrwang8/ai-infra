@@ -7,3 +7,5 @@ title: "关于"
 从原理到实践，持续整理值得分享的经验与思考。
 
 我的 GitHub：[github.com/xrwang8](https://github.com/xrwang8)。
+
+我也在 [X（Twitter）@XWangba](https://x.com/XWangba) 分享 AI Infra 实践和开源进展。

@@ -3,6 +3,7 @@ title: "5 行补成 8 行，CUDA Graph 为什么反而更快？一张 4090 D 的
 date: "2026-11-17"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "CUDA Graph", "性能测试"]
+description: "在 RTX 4090 D 上对照 Eager、精确尺寸图与填充图，用 CUDA Trace 解释为何 5 行补到 8 行更快，而宽矩阵过度填充会变慢。"
 ---
 
 ![CUDA Graph一次提交与填充额外工作的概念封面](images/cover.png)

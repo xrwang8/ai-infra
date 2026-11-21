@@ -3,6 +3,7 @@ title: "请求全部成功，停发后却还要等 86 秒：一次双模型推�
 date: "2026-11-19"
 categories: ["AI Infra 实测"]
 tags: ["HAMi", "性能测试", "Goodput"]
+description: "用 Ascend 310P3 上的三组开环回放复盘停发后的 86.15 秒等待，对照客户端在途请求、引擎排队与逐模型延迟。"
 ---
 
 ![成功指示与未完成队列并存的原创概念插画](images/cover.png)

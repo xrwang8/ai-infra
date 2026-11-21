@@ -3,6 +3,7 @@ title: "请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层
 date: "2026-11-18"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "KV Cache", "GPU 显存"]
+description: "用 RTX 4090 D 的三轮实验对照 vLLM KV Block、PyTorch 张量存储、分配器和驱动显存，解释请求结束后显存仍驻留的原因。"
 ---
 
 ![空闲缓存槽位与仍被持有的底层存储概念封面](images/cover.png)

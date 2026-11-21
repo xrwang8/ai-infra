@@ -71,3 +71,9 @@ identifier = 'github'
 name = 'GitHub'
 url = 'https://github.com/xrwang8'
 weight = 6
+
+[[menus.main]]
+identifier = 'x'
+name = 'X'
+url = 'https://x.com/XWangba'
+weight = 7

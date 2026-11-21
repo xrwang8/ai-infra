@@ -3,6 +3,7 @@ title: "Kubernetes 1.37：GPU Pod 不改 YAML，也能走 DRA？"
 date: "2026-10-15"
 categories: ["AI Infra"]
 tags: ["Kubernetes", "DRA", "GPU 调度"]
+description: "梳理 Kubernetes 1.37 如何用 DeviceClass 的 extendedResourceName 为旧 GPU Pod 分配 DRA 设备，以及逐节点迁移的验收项。"
 ---
 
 ![Kubernetes GPU 分配封面](assets/k8s-gpu-cover-5x2.png)

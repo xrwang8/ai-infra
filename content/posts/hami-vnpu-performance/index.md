@@ -3,6 +3,7 @@ title: "HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在
 date: "2026-11-17"
 categories: ["AI Infra 实测"]
 tags: ["HAMi", "vNPU", "昇腾", "性能测试"]
+description: "在 Ascend 310P3 上比较 HAMi vNPU 单实例开关与双 Pod 共卡，给出固定负载的吞吐对照、逐请求延迟和调度等待证据。"
 ---
 
 ![HAMi vNPU 性能对照封面，概念插画](assets/cover-hami-vnpu.png)

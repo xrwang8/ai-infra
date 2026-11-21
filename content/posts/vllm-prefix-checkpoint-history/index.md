@@ -3,6 +3,7 @@ title: "同样共享 4K 前缀，为什么 vLLM 一次命中 3,696 Token，另�
 date: "2026-11-13"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "前缀缓存", "Qwen3.5"]
+description: "对照两种 Qwen3.5-9B 请求历史，复盘相同 4K 公共前缀为何得到 0 或 3,696 个命中 Token，并核对 GDN 状态检查点。"
 ---
 
 ![两个公共前缀相同、检查点位置不同的历史请求卷轴，无字漫画](images/cover.png)

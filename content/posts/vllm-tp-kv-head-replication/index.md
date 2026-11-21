@@ -3,6 +3,8 @@ title: "TP 从 4 加到 8，KV 显存为什么可能不再减半？"
 date: "2026-11-21"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "KV Cache", "张量并行", "Qwen3.5"]
+description: "从 Qwen3.5-9B 的 TP=2 Trace、vLLM 源码和 CPU 数值验证推导 KV 头的复制规则，解释 TP=4 到 TP=8 的显存预算。"
+images: ["images/cover.png"]
 ---
 
 给 Qwen3.5-9B 估算扩卡后的 KV 显存，算到 TP=8 时有一项不能再除以二。这个模型只有四个全注意力 KV 头，TP=4 时每个 Rank 已经只留一个。沿 vLLM 0.33.0 的加载路径继续算，TP=8 仍然是每卡一个，只是每个 KV 头有两份副本。按本例 BF16 和 8 个全注意力层估算，**TP=4 和 TP=8 都是每卡 8 KiB/Token，整组却从 32 增到 64 KiB/Token。**

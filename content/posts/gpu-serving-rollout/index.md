@@ -3,6 +3,7 @@ title: "GPU 满了，模型还怎么升级：滚动发布的容量与排空边�
 date: "2026-10-28"
 categories: ["AI Infra"]
 tags: ["Kubernetes", "GPU", "滚动发布"]
+description: "用四个 GPU 副本占满四张卡的算例，拆解 Kubernetes 滚动发布中的 GPU 交接、模型 Readiness 与流式请求排空。"
 ---
 
 ![GPU 模型滚动发布：空位、可服务容量与请求排空](images/cover.png)

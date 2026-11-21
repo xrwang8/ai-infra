@@ -3,6 +3,7 @@ title: "P99 算出 2.49 秒，但样本上限不到 1.62 秒：vLLM 监控里的
 date: "2026-11-14"
 categories: ["AI Infra 实测"]
 tags: ["vLLM", "Prometheus", "可观测性"]
+description: "用五条 vLLM 请求的指标快照复算 2.485 秒 P99，说明 Prometheus 桶内插值、样本上界和达标率各能回答什么。"
 ---
 
 ![粗刻度量尺与真实观测的概念插画](images/cover.png)

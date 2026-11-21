@@ -1,5 +1,6 @@
 ---
 title: "专题导航"
+description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署、推理运行时、vLLM KV Cache、压测与可观测性。"
 ---
 
 从基础设施到智能应用，这里逐步整理技术文章与真实案例。

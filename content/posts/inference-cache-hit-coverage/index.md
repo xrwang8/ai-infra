@@ -3,6 +3,7 @@ title: "KV Cache 命中率 64.4%，到底测到了什么？复核一轮 330 请�
 date: "2026-11-19"
 categories: ["AI Infra 实测"]
 tags: ["KV Cache", "EvalScope", "性能测试"]
+description: "复算 EvalScope 的 330 条多轮推理请求，追踪 64.3768% KV Cache 命中率的历史估算来源，以及如何记录服务端字段和覆盖率。"
 ---
 
 ![多个缓存报告指标连接到同一历史估计来源的概念封面](images/cover.png)
