@@ -8,7 +8,9 @@
   (dict "name" "KV Cache" "anchor" "kv-cache" "accent" "teal" "description" "缓存容量、前缀命中、块复用与显存生命周期。")
   (dict "name" "压测与可观测性" "anchor" "压测与可观测性" "accent" "amber" "description" "沿着吞吐、首段延迟、排队与流式交付复核性能。")
 }}
-<link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
+{{ with resources.Get "css/knowledge-home.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{ end }}
 <div class="knowledge-home">
   <section class="home-hero" aria-labelledby="hero-title">
     <div class="home-terminal">
