@@ -44,4 +44,6 @@ docker inspect -f 'OOMKilled={{.State.OOMKilled}} exit={{.State.ExitCode}} finis
 
 当 `high` 增加却没有结束进程，可以检查是否存在回收延迟。出现 `oom_kill` 后还要核对时间、进程和组。把内存数据和对应阶段放在一起，才能决定是降低主机缓存占用、改变 staging、调整资源设置，还是查其他终止动作。
 
+前置阅读可先理解 [cgroup v2 的层级与 controller]({{< relref "posts/linux-cgroup-v2-resource-model/index.md" >}})，再回到这一类资源怎么限制和记账。
+
 [Docker 工程笔记专题]({{< relref "docker-field-notes/index.md" >}})

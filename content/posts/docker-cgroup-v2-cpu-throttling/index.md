@@ -52,4 +52,6 @@ docker run --rm --network none --cgroupns=private --cpus=0.5 busybox:1.36 sh -c 
 
 `nr_periods` 统计计时周期，`nr_throttled` 统计触发节流的周期数。`throttled_usec` 是组级累计量。要判断某段业务是否受限，先在相同 cgroup、相同窗口取差值，再把分词、批次准备、请求等待和 GPU 空转放到相同时间轴。`throttled_usec` 本身无法告诉你哪条请求等了几毫秒。若目标组看起来没有限流，也要查父 cgroup 与实际绑核范围。
 
+前置阅读可先理解 [cgroup v2 的层级与 controller]({{< relref "posts/linux-cgroup-v2-resource-model/index.md" >}})，再回到这一类资源怎么限制和记账。
+
 [Docker 工程笔记专题]({{< relref "docker-field-notes/index.md" >}})

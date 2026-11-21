@@ -1,14 +1,19 @@
 ---
 title: "Docker 工程笔记"
-description: "12 篇从工程问题出发的 Docker 学习笔记，覆盖容器进程、namespace、cgroup v2、网络、BuildKit、镜像交付和 Kubernetes 运行时。"
+description: "从容器运行模型入手的 Docker 学习笔记，覆盖 Linux namespace、cgroup v2、存储、网络、BuildKit、镜像交付和 Kubernetes 运行时。"
 ---
 
 学 Docker 可以沿着同一个镜像从构建走到运行的过程。先理解镜像、容器和进程的关系，再分清 namespace 的资源视图、cgroup 的资源预算、存储层的数据生命周期和网络的通信路径。理解运行模型之后，再学怎样用 Dockerfile 交付可复现的制品，最后接到 Kubernetes 的 CRI 和跨节点网络。
 
-## 运行与资源
+## 先理解容器怎么运行
 
 - [docker run 之后，镜像怎么变成一个 Linux 进程？]({{< relref "posts/docker-run-container-process/index.md" >}})
 - [同一进程为什么有两个 PID？用 namespace 看容器隔离]({{< relref "posts/linux-container-namespaces/index.md" >}})
+## 再掌握 Linux 资源控制
+
+先学层级、controller 与 v1/v2 接口的关系，再分别看 CPU 的时间预算和内存的回收边界。
+
+- [Linux cgroup v2 的资源模型：层级、controller 与容器限额]({{< relref "posts/linux-cgroup-v2-resource-model/index.md" >}})
 - [Docker CPU 限额怎么查？从 cpu.max 追到 throttling]({{< relref "posts/docker-cgroup-v2-cpu-throttling/index.md" >}})
 - [容器退出码 137，怎么判断是不是 cgroup OOM？]({{< relref "posts/docker-cgroup-v2-memory-oom/index.md" >}})
 
