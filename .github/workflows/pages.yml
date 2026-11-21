@@ -13,9 +13,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      indexnow_urls: ${{ steps.indexnow.outputs.urls }}
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
       - name: Install Hugo and Dart Sass
         run: |
@@ -27,6 +30,43 @@ jobs:
       - uses: actions/configure-pages@v5
       - name: Build
         run: hugo --minify
+      - name: Prepare IndexNow updates
+        id: indexnow
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          PREVIOUS_SHA: ${{ github.event.before }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import subprocess
+
+          key = os.environ.get('INDEXNOW_KEY', '')
+          previous = os.environ.get('PREVIOUS_SHA', '')
+          if key:
+              if not re.fullmatch(r'[a-f0-9]{32}', key):
+                  raise SystemExit('Invalid IndexNow key format')
+              Path(f'public/{key}.txt').write_text(key, encoding='utf-8')
+
+          routes = set()
+          if key and previous.strip('0'):
+              changes = subprocess.check_output(
+                  ['git', 'diff', '--name-only', previous, 'HEAD', '--', 'content'],
+                  text=True,
+              )
+              for name in changes.splitlines():
+                  path = Path(name).parts
+                  if len(path) >= 4 and path[:2] == ('content', 'posts'):
+                      routes.add(f'posts/{path[2]}/')
+                  elif name in ('content/topics/index.md', 'content/about/index.md'):
+                      routes.add(f'{path[1]}/')
+
+          published = sorted(route for route in routes if (Path('public') / route / 'index.html').is_file())
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as outputs:
+              print(f'urls={json.dumps(published)}', file=outputs)
+          PY
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
@@ -39,3 +79,28 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify IndexNow of changed pages
+        if: ${{ needs.build.outputs.indexnow_urls != '' && needs.build.outputs.indexnow_urls != '[]' }}
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          INDEXNOW_ROUTES: ${{ needs.build.outputs.indexnow_urls }}
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from urllib.parse import urlsplit
+          from urllib.request import Request, urlopen
+
+          base = os.environ['PAGES_URL'].rstrip('/') + '/'
+          key = os.environ['INDEXNOW_KEY']
+          urls = [base + route for route in json.loads(os.environ['INDEXNOW_ROUTES'])]
+          payload = {'host': urlsplit(base).hostname, 'key': key,
+                     'keyLocation': base + key + '.txt', 'urlList': urls}
+          request = Request('https://api.indexnow.org/indexnow',
+                            data=json.dumps(payload).encode('utf-8'),
+                            headers={'Content-Type': 'application/json; charset=utf-8'})
+          with urlopen(request, timeout=30) as response:
+              print(f'IndexNow returned HTTP {response.status} for {len(urls)} URLs')
+          PY
