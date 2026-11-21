@@ -1,0 +1,215 @@
+/* Long-form journal and field notes. FixIt's navigation stays in charge of the TOC. */
+main.fi-container:has(> article.single > .post-meta) {
+  --note-ink: light-dark(#1d2924, #e6eee8);
+  --note-accent: light-dark(#245d48, #a1d5b7);
+  --note-muted: light-dark(#53655b, #aebeb5);
+  --note-rule: light-dark(#dce4df, #34453c);
+  --note-wash: light-dark(#f1f6f3, #1d2a24);
+  --note-heading-font: Georgia, "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 69rem;
+  margin-inline: auto;
+  padding-inline: clamp(18px, 4vw, 40px);
+  gap: clamp(24px, 4vw, 52px);
+
+  > aside:empty {
+    display: none;
+  }
+
+  > article.single {
+    flex: 1 1 47rem;
+    min-width: 0;
+    max-width: 47rem;
+    padding-inline: 0;
+    margin-block: clamp(26px, 5vw, 58px) 52px;
+    color: var(--note-ink);
+
+    .single-title {
+      padding: 0;
+      font: 700 clamp(1.75rem, 3.3vw, 2.45rem) / 1.28 var(--note-heading-font);
+      overflow-wrap: anywhere;
+      text-wrap: balance;
+      animation: none;
+    }
+
+    .post-meta {
+      margin-block: 15px 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--note-rule);
+      color: var(--note-muted);
+      font-size: .82rem;
+      line-height: 1.75;
+
+      .author {
+        font-size: inherit;
+      }
+
+      time {
+        font-variant-numeric: tabular-nums;
+      }
+    }
+
+    :is(.post-meta, .post-footer, .content) a:not(.heading-mark) {
+      color: var(--note-accent);
+    }
+
+    .featured-image {
+      margin-block: 1.25rem;
+      max-width: 35rem;
+      margin-inline: auto;
+    }
+
+    .content {
+      font-size: clamp(1rem, 1.4vw, 1.0625rem);
+      line-height: 1.9;
+      overflow-wrap: break-word;
+
+      > :is(p, ul, ol, dl) {
+        margin-block: .95em;
+      }
+
+      > p:first-child {
+        margin-top: 0;
+      }
+
+      > :is(h2, h3, h4) {
+        color: var(--note-ink);
+        scroll-margin-top: 4.75rem;
+        text-wrap: pretty;
+      }
+
+      > h2 {
+        margin-block: 1.9em .68em;
+        padding-bottom: .45em;
+        border-color: var(--note-rule);
+        font: 700 clamp(1.3rem, 2.2vw, 1.55rem) / 1.42 var(--note-heading-font);
+      }
+
+      > h3 {
+        margin-block: 1.5em .5em;
+        font-size: 1.15em;
+        line-height: 1.45;
+      }
+
+      > p a:not(.heading-mark),
+      > :is(ul, ol) a {
+        text-decoration: underline;
+        text-decoration-thickness: .055em;
+        text-underline-offset: .19em;
+      }
+
+      > p:has(> img:only-child),
+      > figure {
+        margin-block: 1.6em .55em;
+        text-align: center;
+      }
+
+      > p:first-child:has(> img:only-child) {
+        margin-block: 0 1.3em;
+      }
+
+      > p:first-child > img[src*="cover"] {
+        max-width: min(100%, 32rem);
+      }
+
+      img {
+        height: auto;
+        border: 1px solid var(--note-rule);
+        border-radius: 6px;
+      }
+
+      figcaption,
+      > p:has(> img:only-child) + p > em:only-child {
+        color: var(--note-muted);
+        font-size: .88em;
+      }
+
+      blockquote {
+        margin-block: 1.4em;
+        padding: .25em .9em;
+        background: var(--note-wash);
+        border-inline-start: 3px solid var(--note-accent);
+      }
+
+      :not(pre) > code {
+        overflow-wrap: anywhere;
+      }
+
+      > :is(.highlight, pre, .table-wrapper) {
+        max-width: 100%;
+        margin-block: 1.4em;
+        border: 1px solid var(--note-rule);
+        border-radius: 6px;
+      }
+
+      pre {
+        font-size: .85rem;
+        line-height: 1.6;
+      }
+
+      .table-wrapper > table {
+        font-size: .86rem;
+        line-height: 1.6;
+
+        thead {
+          background: var(--note-wash);
+        }
+
+        th,
+        td {
+          padding: .5rem .65rem;
+          border-color: var(--note-rule);
+        }
+      }
+    }
+
+    #toc-static {
+      border: 1px solid var(--note-rule);
+      border-radius: 6px;
+
+      .toc-title {
+        padding: .35rem .75rem;
+        background: var(--note-wash);
+        color: var(--note-accent);
+      }
+    }
+  }
+
+  > #toc-auto {
+    flex: 0 1 14rem;
+    margin-top: clamp(26px, 5vw, 58px);
+    padding: 0 0 0 15px;
+    border-inline-start: 1px solid var(--note-rule);
+
+    .toc-title {
+      color: var(--note-accent);
+
+      &::before {
+        content: none;
+      }
+    }
+
+    .toc-content {
+      max-height: calc(100dvh - 8rem);
+      color: var(--note-muted);
+      font-size: .85rem;
+      line-height: 1.65;
+      mask-image: none;
+
+      li {
+        margin-block: .25rem;
+      }
+
+      ul a:first-child::before {
+        color: var(--note-rule);
+      }
+
+      li > a.active,
+      ul a.active:first-child::before {
+        color: var(--note-accent);
+      }
+    }
+  }
+}

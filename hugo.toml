@@ -8,6 +8,8 @@ enableRobotsTXT = true
 
 [params]
 license = ''
+capitalize_titles = false
+word_count = false
 description = '从 Kubernetes、云原生到 AI Infra 与 AI Agent 的技术实践'
 
 [params.author]
@@ -28,6 +30,9 @@ type = 'fuse'
 
 [outputs]
 home = ['HTML', 'RSS', 'JSON', 'search']
+
+[markup.highlight]
+noClasses = false
 
 [[menus.main]]
 identifier = 'posts'
