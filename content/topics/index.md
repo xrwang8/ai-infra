@@ -9,6 +9,7 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 关注容器、集群调度、网络、存储和可观测性。
 
+- [Docker 工程笔记（12 篇）]({{< relref "docker-field-notes/index.md" >}})
 - [Kubernetes 1.37：GPU Pod 不改 YAML，也能走 DRA？]({{< relref "posts/k8s-dra-extended-resource/index.md" >}})
 - [GPU 满了，模型还怎么升级：滚动发布的容量与排空边界]({{< relref "posts/gpu-serving-rollout/index.md" >}})
 - [双卡 Pod 已经调度，为什么 13 分 51 秒才 Ready？]({{< relref "posts/qwen-dual-gpu-cold-start/index.md" >}})

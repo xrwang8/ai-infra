@@ -60,7 +60,7 @@ jobs:
                   path = Path(name).parts
                   if len(path) >= 4 and path[:2] == ('content', 'posts'):
                       routes.add(f'posts/{path[2]}/')
-                  elif name in ('content/topics/index.md', 'content/about/index.md'):
+                  elif len(path) == 3 and path[0] == 'content' and path[2] == 'index.md':
                       routes.add(f'{path[1]}/')
 
           published = sorted(route for route in routes if (Path('public') / route / 'index.html').is_file())
