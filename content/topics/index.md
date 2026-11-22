@@ -21,6 +21,7 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 ### 推理运行时与设备
 
+- [Qwen3.5 的 24 层 Gated DeltaNet，为什么核心只占约 2.2% 的 Kernel 时间？]({{< relref "posts/qwen35-gated-deltanet-prefill/index.md" >}})
 - [HAMi vNPU 性能实测：从原生独占到双 Pod 共卡，性能差在哪里？]({{< relref "posts/hami-vnpu-performance/index.md" >}})
 - [明明没禁用，vLLM 为什么还是关闭了 Custom AllReduce？]({{< relref "posts/vllm-custom-allreduce-selection/index.md" >}})
 - [Gate/Up 合并后，TP=2 为什么不能把权重直接切成两半？]({{< relref "posts/vllm-merged-mlp-tp-layout/index.md" >}})

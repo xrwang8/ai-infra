@@ -83,6 +83,8 @@ vLLM的混合缓存协调器 `find_longest_cache_hit` 会询问不同缓存组�
 
 这一轮能够确认的是，请求历史会改变实际复用量。先算整块边界，再查各组共用的可恢复位置。若还要判断是哪一份状态被回收或驱逐，得补逐组记录。
 
+恢复状态后，GDN 与全注意力在相同块长下怎样执行，可以对照 [Qwen3.5 的 GDN Prefill 实测]({{< relref "posts/qwen35-gated-deltanet-prefill/index.md" >}})。
+
 **资料来源**
 
 - [vLLM v0.33.0前缀缓存设计与隔离](https://docs.vllm.ai/en/v0.33.0/design/prefix_caching/)

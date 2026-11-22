@@ -34,6 +34,12 @@ home = ['HTML', 'RSS', 'JSON', 'search']
 [markup.highlight]
 noClasses = false
 
+[markup.goldmark.extensions.passthrough]
+enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [["$$", "$$"]]
+
 [[menus.main]]
 identifier = 'posts'
 name = '文章'
