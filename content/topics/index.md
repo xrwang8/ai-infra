@@ -37,6 +37,8 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 ### 压测与可观测性
 
+- [EvalScope 多轮压测，请求成功率 99.1%，为什么 12% 的会话仍有失败？]({{< relref "posts/evalscope-multiturn-latency-population/index.md" >}})
+- [vLLM 分块 Prefill 已经采样四次，为什么只输出一个 Token？]({{< relref "posts/vllm-chunked-prefill-sampling/index.md" >}})
 - [请求全部成功，停发后却还要等 86 秒]({{< relref "posts/inference-open-loop-drain/index.md" >}})
 - [P99 算出 2.49 秒，但样本上限不到 1.62 秒]({{< relref "posts/vllm-histogram-quantile/index.md" >}})
 - [vLLM 跑出 3753 Token/s，为什么换个分子，成绩就变了？]({{< relref "posts/vllm-throughput-goodput/index.md" >}})

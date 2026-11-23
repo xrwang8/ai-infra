@@ -225,6 +225,8 @@ print(carry_error, affine_error, reset_error)
 
 调后端、融合、批量和通信参数时，分别对比设备实际做的工作、相邻操作间的等待，以及跨块状态是否仍与顺序递推一致。这三项分别约束性能收益的覆盖面、关键路径和正确性。
 
+同一请求每块执行完后还有词表投影和候选采样。两份 Trace 与客户端结果能解释最终只有一个有效输出的原因。 [vLLM 分块 Prefill 的采样与有效计数]({{< relref "posts/vllm-chunked-prefill-sampling/index.md" >}})
+
 ## 资料来源
 
 - [Qwen3.5-9B 模型配置](https://huggingface.co/Qwen/Qwen3.5-9B/blob/main/config.json)：本文使用部署归档配置，公开链接用于核对模型结构。

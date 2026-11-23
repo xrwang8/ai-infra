@@ -200,6 +200,8 @@ EvalScope所核对版本的流式处理，将带choices的消息加入response_m
 
 客户端交付和请求形状仍可以用这轮归档分析。引用缓存数字时，在图旁把历史估算写清楚。需要评估设备到底复用了多少，重新采 `usage` 和服务端计数。
 
+同类多轮压测还需核对会话时延的纳入条件。 [EvalScope 会话时延与成功前缀]({{< relref "posts/evalscope-multiturn-latency-population/index.md" >}})
+
 ## 资料来源
 
 - [EvalScope v1.14.1：多轮策略中的历史回退，固定提交9d298b8](https://github.com/modelscope/evalscope/blob/9d298b839375e735fbbef992b4042e0852d0b8aa/evalscope/perf/core/strategies/multi_turn.py)
