@@ -37,6 +37,7 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 ### 压测与可观测性
 
+- [并发越高，为什么大模型总输出吞吐可能增加？]({{< relref "posts/inference-concurrency-output-throughput/index.md" >}})
 - [8 卡 H100 上压测 SGLang，为什么加并发，首 token 反而慢了]({{< relref "posts/sglang-h100-prefill-profiling/index.md" >}})
 - [EvalScope 多轮压测，请求成功率 99.1%，为什么 12% 的会话仍有失败？]({{< relref "posts/evalscope-multiturn-latency-population/index.md" >}})
 - [vLLM 分块 Prefill 已经采样四次，为什么只输出一个 Token？]({{< relref "posts/vllm-chunked-prefill-sampling/index.md" >}})
