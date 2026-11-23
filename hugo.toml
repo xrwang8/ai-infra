@@ -25,7 +25,7 @@ contribution = false
 fullscreen = false
 
 [params.comment]
-enable = true
+enable = false
 
 [params.comment.giscus]
 enable = true
@@ -37,6 +37,13 @@ mapping = 'pathname'
 strict = '1'
 lang = 'zh-CN'
 lazy_load = true
+
+[[cascade]]
+  [cascade.target]
+  kind = 'page'
+  path = '/posts/**'
+  [cascade.params]
+  comment = true
 
 [params.search]
 enable = true
