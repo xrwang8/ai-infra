@@ -24,6 +24,20 @@ social = false
 contribution = false
 fullscreen = false
 
+[params.comment]
+enable = true
+
+[params.comment.giscus]
+enable = true
+repo = 'xrwang8/ai-infra'
+repo_id = 'R_kgDOV1Pjvg'
+category = 'Announcements'
+category_id = 'DIC_kwDOV1Pjvs4DLxU5'
+mapping = 'pathname'
+strict = '1'
+lang = 'zh-CN'
+lazy_load = true
+
 [params.search]
 enable = true
 type = 'fuse'
