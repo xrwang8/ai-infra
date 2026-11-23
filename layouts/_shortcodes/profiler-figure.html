@@ -1,0 +1,17 @@
+{{- $src := .Get "src" -}}
+{{- $image := .Page.Resources.GetMatch $src -}}
+{{- if not $image -}}
+  {{- errorf "profiler-figure: missing page resource %q in %s" $src .Page.Path -}}
+{{- end -}}
+{{- $caption := .Get "caption" -}}
+<figure class="profiler-figure">
+  <div class="profiler-figure-actions">
+    <span class="profiler-figure-hint">可左右滑动看细节</span>
+    <a href="{{ $image.RelPermalink }}" target="_blank" rel="noopener" aria-label="查看原图（新标签页）{{ $caption }}">查看原图</a>
+  </div>
+  <div class="profiler-figure-scroll" tabindex="0" role="region" aria-label="{{ $caption }}">
+    <img src="{{ $image.RelPermalink }}" alt="{{ .Get "alt" }}"
+         width="{{ $image.Width }}" height="{{ $image.Height }}" loading="lazy" decoding="async">
+  </div>
+  <figcaption class="image-caption">{{ $caption }}</figcaption>
+</figure>
