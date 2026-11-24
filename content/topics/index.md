@@ -37,6 +37,7 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 ### 压测与可观测性
 
+- [八卡推理里，NCCL 占了 85% 的 Kernel 时间，能说明什么？]({{< relref "posts/sglang-nccl-kernel-time/index.md" >}})
 - [DeepSeek-V4.1-Flash-1017 实测：SGLang 日志只有 50 Token/s，压测报告为什么有 464 Token/s？]({{< relref "posts/sglang-token-throughput-measurement/index.md" >}})
 - [并发越高，为什么大模型总输出吞吐可能增加？]({{< relref "posts/inference-concurrency-output-throughput/index.md" >}})
 - [8 卡 H100 上压测 SGLang，为什么加并发，首 token 反而慢了]({{< relref "posts/sglang-h100-prefill-profiling/index.md" >}})
