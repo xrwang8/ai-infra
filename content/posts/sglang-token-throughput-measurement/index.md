@@ -15,6 +15,69 @@ lastmod: "2026-11-24"
 
 文中会分别回答三个问题：SGLang 的 50 是怎么记出来的，EvalScope 的 464 在统计什么，以及为什么一个请求的 Decode 速度能比整轮吞吐高。
 
+## 先把环境、资源和启动参数写清楚
+
+这不是一台“只写了 8 张卡”的抽象机器。下面是压测时实际运行的 Predictor Pod 配置快照；参数和环境变量按 Pod spec 原样保留，包含重复项，不把一份现场配置整理成看起来更干净、但无法复现的命令。
+
+| 项目 | 现场配置 |
+| --- | --- |
+| 模型 | `DeepSeek-V4.1-Flash-1017` |
+| 节点与 GPU | `node252`，8 × NVIDIA H100 80 GB HBM3 |
+| SGLang 镜像 | `hub.cetccloud.io:5000/jdcloud/kserve/servingruntimes/lmsysorg/sglang:v0.5.22` |
+| CPU request / limit | `1` / `64` |
+| 内存 request / limit | `1600Gi` / `1600Gi` |
+| GPU request / limit | `8` / `8`，`nvidia.com/gpucores=100`，`nvidia.com/gpumem-percentage=100` |
+| 服务端口 | `80` |
+
+Pod 中的启动参数如下。`--model-path`、`--swa-prefix-tails` 和并行度参数在现场 spec 中出现了重复或并存写法；这正是复现时需要记录的事实，不能事后静默删除。后一个 `--swa-prefix-tails=640` 是 spec 中最后出现的值，但本文不把“最后一个参数覆盖前一个参数”当成未经源码核对的性能结论。
+
+```text
+--model-path=/mnt/models
+--model-path=/mnt/models
+--host=0.0.0.0
+--served-model-name=DeepSeek-V4.1-Flash-1017
+--port=80
+--trust-remote-code
+--tp=8
+--ep-size=8
+--moe-runner-backend=marlin
+--mem-fraction-static=0.7
+--chunked-prefill-size=4096
+--max-running-requests=32
+--cuda-graph-max-bs-decode=64
+--prefill-decode-interval=16
+--swa-prefix-tails=512
+--enable-hierarchical-cache
+--hicache-ratio=2
+--hicache-io-backend=direct
+--hicache-mem-layout=page_first_direct
+--hicache-write-policy=write_back
+--reasoning-parser=auto
+--tool-call-parser=auto
+--speculative-algorithm=DSPARK
+--speculative-dspark-block-size=5
+--watchdog-timeout=3600
+--swa-prefix-tails=640
+--enable-metrics
+--tp-size=8
+```
+
+环境变量也会改变启动路径，不能只复制命令行：
+
+```text
+SGLANG_HICACHE_HOST_REGISTER_CHUNK_GB=1
+SGLANG_ENABLE_DSV41_ENGRAM_HOST_TABLE=1
+SGLANG_DSV41_ENGRAM_HOST_TABLE_LAYOUT=per_rank
+SGLANG_DEFAULT_THINKING=1
+SGLANG_DSV41_REASONING_EFFORT=high
+```
+
+这里的 `CPU request=1` 不是“启动只用了 1 个 CPU”，而是调度保证；`CPU limit=64` 才是容器上限。本文保存的配置快照没有逐秒 CPU 利用率曲线，因此不能把这两个 Kubernetes 数字写成实际 CPU 消耗。内存同理：`1600Gi` 是 Pod 的 request/limit，不等于每时刻都占满 1.6 TiB。
+
+不过，启动日志给出了可核对的内存事实：每个 rank 的 Engram host table 单层约 `24,171 MiB`，记录了两层；V4 HiCache 还记录了 `swa 14.67 GB`、`deepseek_v4_c1 6.47 GB`、`c1_indexer 0.75 GB`、`deepseek_v4_c2 9.71 GB` 和 `c2_indexer 1.13 GB` 的 host pool。这些是每 rank 的分配记录，不能在没有完整 pool 清单时冒充整台机器的总内存峰值。`SGLANG_HICACHE_HOST_REGISTER_CHUNK_GB=1` 是为规避大块 pinned-host 注册失败而保留的现场设置；它不是把 HiCache 容量固定成 1 GiB。
+
+启动后服务自动把 `--tool-call-parser=auto` 解析为 `deepseekv41`，主模型和 DSpark 权重分别完成加载；这说明本文的测试确实是在这套 V4.1、TP8/EP8、Marlin、HiCache、DSpark 配置上进行的，而不是在一条简化命令上重新估算。
+
 下面整理了线上日志中的几个统计窗口。日志反映服务端批次状态，同一行的运行请求数是打印时的快照。
 
 | 日志记录 | 生成吞吐 | 打印时运行请求数 |
