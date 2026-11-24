@@ -104,3 +104,6 @@ identifier = 'x'
 name = 'X'
 url = 'https://x.com/XWangba'
 weight = 7
+
+[params.verification]
+google = "aa6ofJYsw5BF_rkviLJAxnrJwyVzBwAUBPI4XnDXnFM"
