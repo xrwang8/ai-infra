@@ -1,18 +1,31 @@
 ---
-title: "SGLang 日志 50 Token/s，压测报告为什么有 464 Token/s？"
+title: "DeepSeek-V4.1-Flash-1017 实测：SGLang 日志只有 50 Token/s，压测报告为什么有 464 Token/s？"
 date: "2026-11-24"
 categories: ["AI Infra 实测"]
 tags: ["SGLang", "EvalScope", "推理性能", "吞吐量", "TPOT"]
 description: "结合 8 卡 H100 的 SGLang 日志与 EvalScope 测试，复算单请求、整轮和稳态 Token/s，解释统计窗口与聚合顺序。"
+lastmod: "2026-11-24"
 ---
 
-同一套 8 卡 H100 上运行的 DeepSeek-V4.1-Flash-1017，服务端日志有时打印 **51.64 token/s**，有时打印 **331.34 token/s**。另一份 16 并发 Agent 轨迹压测报告，稳态输出吞吐是 **464.72 token/s**。
+同一套 8 卡 H100 上运行的 DeepSeek-V4.1-Flash-1017，服务端日志的某些统计窗口打印 **51.64 token/s**，有时打印 **331.34 token/s**。另一份 16 并发 Agent 轨迹压测报告，稳态输出吞吐是 **464.72 token/s**。标题里的“50”指日志窗口值，不是整轮平均速度。
 
 这几个数字放在一起，第一反应很容易是：服务速度到底是多少？是线上流量更慢，还是压测工具算高了？
 
 我把 SGLang 日志的计数代码、EvalScope 报告、1,340 条成功请求的客户端记录，以及另一组 8K/1K 单并发原始数据重新对了一遍。最重要的发现是，每个数字都带着自己的**计数范围和时间窗口**。离开这两个条件，单独比较 token/s 很容易得出错误结论。
 
 文中会分别回答三个问题：SGLang 的 50 是怎么记出来的，EvalScope 的 464 在统计什么，以及为什么一个请求的 Decode 速度能比整轮吞吐高。
+
+下面整理了线上日志中的几个统计窗口。日志反映服务端批次状态，同一行的运行请求数是打印时的快照。
+
+| 日志记录 | 生成吞吐 | 打印时运行请求数 |
+| --- | ---: | ---: |
+| 窗口 A | 51.64 Token/s | 1 |
+| 窗口 B | 70.23 Token/s | 1 |
+| 窗口 C | 46.40 Token/s | 1 |
+| 窗口 D | 52.38 Token/s | 1 |
+| 窗口 E | 331.34 Token/s | 1 |
+
+相邻 Prefill 日志中有一次记录 155,392 个缓存 Token 和 106 个新 Token。这些摘录能证明日志值出现过，还需要完整窗口和逐请求数据才能计算单个请求的平均 Decode 速度。
 
 ## 一、先把四个数字放回各自的测试里
 
@@ -43,12 +56,12 @@ Agent 轨迹测试于 11 月 20 日进行，16 个并发**会话**共发出 1,35
     last_gen_throughput = num_generated_tokens / gap_latency
     num_generated_tokens = 0
 
-Decode 结果处理会通过 result.get_num_generated_tokens(batch_size) 更新生成 token 计数。统计函数在达到 Decode 日志间隔时计算，并清零窗口计数。打印的 gen throughput 对应：
+Decode 结果处理会通过 result.get_num_generated_tokens(batch_size) 更新生成 token 计数。统计函数在达到 `decode_log_interval` 对应的 forward 计数时计算，并清零窗口计数。它不是一个固定秒数的定时器，所以日志时间戳之间的间隔可以变化。打印的 gen throughput 对应：
 
     两次 Decode 统计之间累计生成的 token 数
     ÷ 两次统计之间经过的墙钟时间
 
-这段墙钟时间可能涵盖请求进入、完成、相邻请求之间空闲，以及同一窗口里的其他调度活动。日志里打印的运行请求数 1 反映打印该条统计时的 batch 状态，不能单凭它还原整个统计窗口里每一个时刻的运行请求数。DSpark 打开时，单次验证可能提交多个 token；这个数字由实际结果计数，不能简单地把 Decode 迭代次数当输出 token 数。
+这段墙钟时间可能涵盖请求进入、完成、相邻请求之间空闲，以及同一窗口里的其他调度活动。日志里打印的运行请求数 1 反映打印该条统计时的 batch 状态，不能单凭它还原整个统计窗口里每一个时刻的运行请求数。DSpark 打开时，单次验证可能提交多个 token；`accept len` 是接受长度的统计线索，不是这个窗口的输出 token/s。输出 token 数仍由结果处理路径计数，不能简单地把 Decode 迭代次数当输出 token 数。
 
 同一段日志里能看到 46.40、51.64、70.23，随后也有 331.34 tok/s。**数值波动是真实的日志观测，但只凭几行日志，无法知道每个低值窗口各有多少秒在空闲、Prefill 或 Decode。** 要拆出具体原因，需要保存相邻统计时刻的精确时间、窗口生成 token 数，再把窗口与请求或 GPU 时间线对齐。
 
@@ -85,7 +98,7 @@ Agent 轨迹报告的 **464.72 tok/s** 是工作负载级别的稳态输出吞�
 
     302,673 / 642.322 ≈ 471.22 token/s
 
-报告里的 **464.72 token/s** 来自另一个窗口，不能用全程 302,673 和 642.322 相除得到。本机 EvalScope v1.15.0 的 steady_state_rates 会按整轮时间的 20% 寻找累计量锚点，用最后一个累计点减去锚点，再除以两点间的时间。报告也标明“去除前 20%”的口径，但当时的原始时间线文件和工具提交未能重新取得，**464.72 作为报告值引用，不能声称这次已从原始窗口独立复算**。
+报告里的 **464.72 token/s** 来自另一个窗口，不能用全程 302,673 和 642.322 相除得到。本机 EvalScope v1.15.0 的 steady_state_rates 会按整轮时间的 20% 寻找累计量锚点，用最后一个累计点减去锚点，再除以两点间的时间。官方指标说明把 Output Throughput 定义为窗口内总输出 token 除以测试时长，把 Decode tok/s 定义为 `1000 / TPOT`，两者不是同一个指标。[EvalScope 指标说明](https://evalscope.readthedocs.io/en/latest/user_guides/stress_test/quick_start.html) 报告也标明“去除前 20%”的口径，但当时的原始时间线文件和工具提交未能重新取得，**464.72 作为报告值引用，不能声称这次已从原始窗口独立复算**。
 
 这里的“稳态”是报告对所选窗口的名称。丢弃一段启动时间有助于减轻开头的影响，本身不保证后续窗口内请求在途数、输入长度和 batch 大小恒定。比较两次测试时，最好把时间窗口和负载随时间的变化一起保存下来。[EvalScope v1.15.0 工作负载时间线实现](https://github.com/modelscope/evalscope/blob/v1.15.0/evalscope/perf/utils/workload_timeline.py)
 
