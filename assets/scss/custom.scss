@@ -29,6 +29,8 @@ main.fi-container:has(> article.single > .post-meta) {
     .single-title {
       padding: 0;
       font: 700 clamp(1.75rem, 3.3vw, 2.45rem) / 1.28 var(--note-heading-font);
+      font-family: "Times New Roman", "Songti SC", "Noto Serif CJK SC", "SimSun", serif;
+      font-variant-numeric: lining-nums;
       overflow-wrap: anywhere;
       text-wrap: balance;
       animation: none;
