@@ -17,13 +17,13 @@ lastmod: "2026-11-24"
 
 ## 先把环境、资源和启动参数写清楚
 
-这不是一台“只写了 8 张卡”的抽象机器。下面是压测时实际运行的 Predictor Pod 配置快照；参数和环境变量按 Pod spec 原样保留，包含重复项，不把一份现场配置整理成看起来更干净、但无法复现的命令。
+这不是一台“只写了 8 张卡”的抽象机器。下面是压测时实际运行的 Predictor Pod 配置快照；启动参数和环境变量保留其原有顺序及重复项，节点和仓库标识经过脱敏，不把一份现场配置整理成看起来更干净、但无法复现的命令。
 
 | 项目 | 现场配置 |
 | --- | --- |
 | 模型 | `DeepSeek-V4.1-Flash-1017` |
-| 节点与 GPU | `node252`，8 × NVIDIA H100 80 GB HBM3 |
-| SGLang 镜像 | `hub.cetccloud.io:5000/jdcloud/kserve/servingruntimes/lmsysorg/sglang:v0.5.22` |
+| GPU | 8 × NVIDIA H100 80 GB HBM3 |
+| SGLang 镜像 | `SGLang v0.5.22`（内部镜像） |
 | CPU request / limit | `1` / `64` |
 | 内存 request / limit | `1600Gi` / `1600Gi` |
 | GPU request / limit | `8` / `8`，`nvidia.com/gpucores=100`，`nvidia.com/gpumem-percentage=100` |
