@@ -35,6 +35,10 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 - [请求结束，显存却没降：vLLM 的 KV Block 释放到了哪一层？]({{< relref "posts/vllm-kv-cache-memory/index.md" >}})
 - [KV Cache 命中率 64.4%，到底测到了什么？]({{< relref "posts/inference-cache-hit-coverage/index.md" >}})
 
+### 上下文与容量验收
+
+- [256K 上下文请求成功，为什么仍出现 `truncated=1`？]({{< relref "posts/sglang-context-truncated-boundary/index.md" >}})
+
 ### 压测与可观测性
 
 - [128 个请求同时发出，为什么服务端平均只运行 38 个？]({{< relref "posts/sglang-queue-counter-sampling/index.md" >}})
