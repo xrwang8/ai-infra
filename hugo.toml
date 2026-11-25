@@ -4,7 +4,9 @@ theme = 'FixIt'
 defaultContentLanguage = 'zh-cn'
 locale = 'zh-CN'
 hasCJKLanguage = true
-enableRobotsTXT = true
+# The effective robots.txt is served from https://xrwang8.github.io/ by the
+# user-site repository; a project-subpath robots.txt is ignored by crawlers.
+enableRobotsTXT = false
 
 [params]
 license = ''
