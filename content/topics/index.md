@@ -41,6 +41,7 @@ description: "智算手记技术专题索引，涵盖 Kubernetes 与 GPU 部署�
 
 ### 压测与可观测性
 
+- [客户端并发从 1 提到 4，首 Token 等待为何从 1.3 秒升至 31.6 秒？]({{< relref "posts/evalscope-single-slot-concurrency/index.md" >}})
 - [128 个请求同时发出，为什么服务端平均只运行 38 个？]({{< relref "posts/sglang-queue-counter-sampling/index.md" >}})
 - [八卡推理里，NCCL 占了 85% 的 Kernel 时间，能说明什么？]({{< relref "posts/sglang-nccl-kernel-time/index.md" >}})
 - [DeepSeek-V4.1-Flash-1017 实测：SGLang 日志只有 50 Token/s，压测报告为什么有 464 Token/s？]({{< relref "posts/sglang-token-throughput-measurement/index.md" >}})
